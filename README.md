@@ -82,6 +82,14 @@ python3 scripts/generate_amap_js.py
 5. 等待完成（每条约 2.5 秒，487 条约 20 分钟）
 6. 弹窗提示完成后，刷新高德收藏页验证
 
+中断后续跑：再次执行 `batchAddFavorites()`（会跳过 localStorage 里已成功的项）。强制重头：`batchAddFavorites({force:true})`。清空进度：`resetBatchProgress()`。
+
+城市默认回退（地址无法识别城市时）：
+
+```bash
+python3 scripts/generate_amap_js.py --default-city 上海
+```
+
 ### 字段说明
 
 | 字段 | 来源 | 说明 |
@@ -102,10 +110,13 @@ python3 scripts/generate_amap_js.py
 ### 常见问题
 
 **Q: 提取 Baidu 收藏时返回 0 条？**  
-A: 确认已在弹出的浏览器窗口中登录百度账号。脚本会自动检测登录状态。
+A: 确认已在弹出的浏览器窗口中登录百度账号。脚本会检测收藏页 URL + 百度登录 Cookie（如 `BDUSS`）；120 秒内未检测到会报错退出。
 
 **Q: 高德注入时提示认证失败？**  
 A: 确保 `amap.com` 已登录，且在**同一标签页**的控制台中执行脚本。
+
+**Q: 注入中途刷新/关页了怎么办？**  
+A: 重新粘贴脚本后执行 `batchAddFavorites()` 即可续跑；进度存在该域名的 localStorage。
 
 **Q: 某些点位偏移？**  
 A: 原始百度坐标可能不精确（尤其是非 POI 标记点）。坐标转换精度理论上在数米内。
@@ -156,6 +167,7 @@ python3 scripts/generate_amap_js.py
 
 # 5. Manually: open amap.com, F12 → Console,
 #    paste amap_batch_add.js, run batchAddFavorites()
+#    (re-run to resume; batchAddFavorites({force:true}) to restart)
 ```
 
 ### Notes
@@ -164,6 +176,8 @@ python3 scripts/generate_amap_js.py
 - **No Amap anti-bot**: JS runs in user's own browser
 - **Coordinate accuracy**: within meters using official algorithms
 - **Rate limiting**: 2.5s default delay, configurable via `--delay`
+- **Resume**: progress saved in `localStorage`; re-run `batchAddFavorites()` after interruption
+- **City fallback**: `--default-city` when address has no known city name
 
 ### License
 

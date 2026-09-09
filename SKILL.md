@@ -72,6 +72,7 @@ User wants to migrate favorites/collections/bookmarks from Baidu Maps to Amap (G
    - Types `batchAddFavorites()` and presses Enter
    - Script runs ~2.5s per item, ~20 minutes for 487 items
    - Shows progress in console, alerts on completion
+   - If interrupted: re-paste and run `batchAddFavorites()` again (skips successes in localStorage); use `batchAddFavorites({force:true})` to restart
 
 ### Phase 4: Verify
 
@@ -89,7 +90,8 @@ User wants to migrate favorites/collections/bookmarks from Baidu Maps to Amap (G
 
 ## Troubleshooting
 
-- **Baidu extraction returns 0 items**: User may not be logged in. Re-run, ensure login completes before the script continues.
+- **Baidu extraction returns 0 items**: User may not be logged in. Script requires favorites URL + Baidu auth cookie; re-run and finish login within 120s.
 - **Amap injection fails with auth error**: User must be logged into `amap.com` in the SAME tab where Console is opened.
+- **Injection interrupted**: Re-run `batchAddFavorites()` to resume; `resetBatchProgress()` clears saved ids.
 - **Some locations appear in wrong spot**: Check if original Baidu coordinates were valid. Non-POI custom markers may have imprecise coordinates.
 - **Console shows "Failed to load resource"**: Normal for ad/tracking blockers. Ignore if batch is progressing.
