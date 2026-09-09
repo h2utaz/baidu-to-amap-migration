@@ -25,6 +25,7 @@ Usage:
 import json
 import math
 import os
+import sys
 import argparse
 
 
@@ -133,7 +134,7 @@ def convert_file(input_path, output_path):
                 "gcj02_lat": round(gcj_lat, 6),
                 "tags": fav.get("tags", []),
             })
-        except Exception as e:
+        except (KeyError, TypeError, ValueError) as e:
             print(f"[WARN] Skipping {fav.get('name', 'unknown')}: {e}")
 
     with open(output_path, "w", encoding="utf-8") as f:
