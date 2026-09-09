@@ -1,7 +1,7 @@
 ---
 name: baidu-to-amap-migration
 description: Migrate Baidu Maps favorites/collections to Amap (Gaode) favorites. Extract favorites from Baidu Maps web via API interception, convert BD-09 coordinates to GCJ-02, and batch inject into Amap via browser Console JS. Handles 400+ favorites at once.
-version: 1.0.0
+version: 1.1.0
 display_name: "百度→高德收藏迁移"
 display_name_en: "Baidu→Amap Favorites Migration"
 description_zh: "将百度地图收藏夹完整迁移到高德地图，包括坐标系转换（BD-09→GCJ-02）和批量注入。自动处理 400+ 收藏点。"
